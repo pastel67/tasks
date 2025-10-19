@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class Messages extends StatelessWidget {
   final String appTitle;
 
-  Messages({required this.appTitle,});
+  Messages({required this.appTitle});
 
   @override
   Widget build(BuildContext context) {

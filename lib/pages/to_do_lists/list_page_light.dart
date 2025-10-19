@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tasks/pages/to_do_lists/widget/floating_button.dart';
+import 'package:tasks/pages/to_do_lists/widget/meggage.dart';
 
 class ListPageLightMode extends StatefulWidget {
   void Function(bool modeChange) togleMode;
@@ -11,6 +13,7 @@ class ListPageLightMode extends StatefulWidget {
 
 class _ListPageLightModeState extends State<ListPageLightMode> {
   bool modeChange = false;
+  final String appTitle = "준호's Tasks";
 
   @override
   Widget build(BuildContext context) {
@@ -19,34 +22,27 @@ class _ListPageLightModeState extends State<ListPageLightMode> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          "준호's Tasks",
+          appTitle,
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         actions: [
-          Text(
-            "다크모드 off",
-            style: TextStyle(color: Theme.of(context).colorScheme.primary),
-          ),
           IconButton(
-            icon: Icon(Icons.toggle_on),
+            icon: Icon(
+              Icons.sunny,
+              color: Theme.of(context).colorScheme.primary,
+            ),
             onPressed: () {
               setState(() {
                 modeChange = !modeChange;
-
                 widget.togleMode(modeChange);
               });
             },
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Container(
-          color: Colors.white54,
-          width: double.infinity,
-          child: Column(),
-        ),
-      ),
+      body: Messages(appTitle: appTitle),
+      resizeToAvoidBottomInset: false,
+      floatingActionButton: floatingButton(context),
     );
   }
 }

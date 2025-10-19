@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:to_do_app_ui/pages/to_do_lists/list_page_dark.dart';
-import 'package:to_do_app_ui/pages/to_do_lists/list_page_light.dart';
-import 'package:to_do_app_ui/themeData.dart';
+import 'package:tasks/pages/to_do_lists/list_page_dark.dart';
+import 'package:tasks/pages/to_do_lists/list_page_light.dart';
+import 'package:tasks/themeData.dart';
 
 void main() {
   runApp(const MyApp());
