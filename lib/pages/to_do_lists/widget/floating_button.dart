@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tasks/pages/to_do_lists/widget/text_input_field.dart';
+import 'package:tasks/pages/to_do_lists/widget/text_input_bottom_sheet.dart';
 
 FloatingActionButton floatingButton(BuildContext context) {
   return FloatingActionButton(
@@ -16,7 +16,7 @@ FloatingActionButton floatingButton(BuildContext context) {
               right: 20,
               bottom: MediaQuery.of(context).viewInsets.bottom,
             ),
-            child: TextInputField(context),
+            child: TextInputField(),
           );
         },
       );
@@ -24,4 +24,3 @@ FloatingActionButton floatingButton(BuildContext context) {
     child: Icon(Icons.add, size: 24),
   );
 }
-

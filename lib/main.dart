@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tasks/pages/to_do_lists/list_page_dark.dart';
-import 'package:tasks/pages/to_do_lists/list_page_light.dart';
+import 'package:tasks/pages/to_do_lists/home_page_dark.dart';
+import 'package:tasks/pages/to_do_lists/home_page_light.dart';
 import 'package:tasks/themeData.dart';
 
 void main() {
@@ -29,7 +29,7 @@ class _MyAppState extends State<MyApp> {
       themeMode: darkMode ? ThemeMode.dark : ThemeMode.light,
       theme: lightTheme,
       darkTheme: darkThmem,
-      home: darkMode ? ListPageDarkMode(togled) : ListPageLightMode(togled),
+      home: darkMode ? HomePageDark(togled) : HomePageLight(togled),
     );
   }
 }

@@ -2,23 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:tasks/pages/to_do_lists/widget/floating_button.dart';
 import 'package:tasks/pages/to_do_lists/widget/meggage.dart';
 
-class ListPageDarkMode extends StatefulWidget {
+class HomePageLight extends StatefulWidget {
   void Function(bool modeChange) togleMode;
 
-  ListPageDarkMode(this.togleMode);
+  HomePageLight(this.togleMode);
 
   @override
-  State<ListPageDarkMode> createState() => _ListPageDarkModeState();
+  State<HomePageLight> createState() => _HomePageLightState();
 }
 
-class _ListPageDarkModeState extends State<ListPageDarkMode> {
-  bool modeChange = true;
+class _HomePageLightState extends State<HomePageLight> {
+  bool modeChange = false;
   final String appTitle = "준호's Tasks";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[600],
+      backgroundColor: Colors.grey[400],
       appBar: AppBar(
         centerTitle: true,
         title: Text(
@@ -28,8 +28,8 @@ class _ListPageDarkModeState extends State<ListPageDarkMode> {
         actions: [
           IconButton(
             icon: Icon(
-              Icons.nightlight,
-              color: Theme.of(context).colorScheme.secondary,
+              Icons.sunny,
+              color: Theme.of(context).colorScheme.primary,
             ),
             onPressed: () {
               setState(() {
@@ -40,7 +40,7 @@ class _ListPageDarkModeState extends State<ListPageDarkMode> {
           ),
         ],
       ),
-      body: Messages(appTitle: appTitle),
+      body: Messages(appTitle),
       resizeToAvoidBottomInset: false,
       floatingActionButton: floatingButton(context),
     );
