@@ -25,7 +25,14 @@ class _TextInputFieldState extends State<TextInputField> {
         ),
         isDescription
             ? SizedBox()
-            : TextField(decoration: InputDecoration(hintText: '')),
+            : TextField(
+                keyboardType: TextInputType.multiline,
+                maxLines: null,
+                decoration: InputDecoration(
+                  hintText: '세부정보 추가',
+                  hintStyle: TextStyle(fontSize: 14),
+                ),
+              ),
         SizedBox(height: 10),
         Row(
           children: [
@@ -54,6 +61,19 @@ class _TextInputFieldState extends State<TextInputField> {
                   : Icon(Icons.star_border, size: 24),
             ),
             Spacer(),
+            isDescription
+                ? Container()
+                : TextButton(
+                    onPressed: () {
+                      setState(() {
+                        isDescription = !isDescription;
+                      });
+                    },
+                    child: Text(
+                      "취소",
+                      style: TextStyle(color: Theme.of(context).dividerColor),
+                    ),
+                  ),
             TextButton(
               onPressed: () {
                 print('저장할래');
