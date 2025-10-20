@@ -3,19 +3,19 @@ import 'package:flutter/material.dart';
 final lightTheme = ThemeData(
   useMaterial3: true,
   colorScheme: ColorScheme.fromSeed(
-    primary: Colors.amber,
-    secondary: const Color.fromARGB(255, 255, 228, 132),
+    primary: const Color.fromARGB(255, 255, 193, 5),
+    secondary: const Color.fromARGB(255, 165, 110, 0),
     seedColor: const Color.fromARGB(255, 255, 180, 17),
     brightness: Brightness.light,
   ),
-  dividerColor: Colors.black54,
+  dividerColor: Colors.black87,
 );
 
 final darkThmem = ThemeData(
   useMaterial3: true,
   colorScheme: ColorScheme.fromSeed(
     primary: const Color.fromARGB(255, 56, 0, 120),
-    secondary: Colors.deepPurple,
+    secondary: const Color.fromARGB(255, 191, 154, 255),
     seedColor: Colors.deepPurple,
     brightness: Brightness.dark,
   ),

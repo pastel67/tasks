@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tasks/pages/to_do_lists/widget/floating_button.dart';
-import 'package:tasks/pages/to_do_lists/widget/meggage.dart';
+import 'package:tasks/pages/to_do_lists/add_todo_page.dart';
+import 'package:tasks/pages/to_do_lists/widget/non_to_do_list.dart';
+import 'package:tasks/to_do_entity.dart';
 
 class HomePageLight extends StatefulWidget {
   void Function(bool modeChange) togleMode;
@@ -12,13 +13,22 @@ class HomePageLight extends StatefulWidget {
 }
 
 class _HomePageLightState extends State<HomePageLight> {
-  bool modeChange = false;
   final String appTitle = "준호's Tasks";
+  bool modeChange = false;
+  List<ToDoEntity> todoData = [];
+
+  void addTodoData(ToDoEntity newTodo) {
+    setState(() {
+      todoData.add(newTodo);
+      print(todoData[0].title);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[400],
+      backgroundColor: modeChange ? Colors.grey[600] : Colors.grey[400],
+
       appBar: AppBar(
         centerTitle: true,
         title: Text(
@@ -27,10 +37,15 @@ class _HomePageLightState extends State<HomePageLight> {
         ),
         actions: [
           IconButton(
-            icon: Icon(
-              Icons.sunny,
-              color: Theme.of(context).colorScheme.primary,
-            ),
+            icon: modeChange
+                ? Icon(
+                    Icons.nightlight,
+                    color: Theme.of(context).colorScheme.secondary,
+                  )
+                : Icon(
+                    Icons.sunny,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
             onPressed: () {
               setState(() {
                 modeChange = !modeChange;
@@ -40,9 +55,32 @@ class _HomePageLightState extends State<HomePageLight> {
           ),
         ],
       ),
-      body: Messages(appTitle),
+
+      body: Column(children: [NonToDoList(appTitle)]),
+
       resizeToAvoidBottomInset: false,
-      floatingActionButton: floatingButton(context),
+
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        shape: CircleBorder(),
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            builder: (BuildContext context) {
+              return Padding(
+                padding: EdgeInsets.only(
+                  left: 20,
+                  right: 20,
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
+                ),
+                child: AddTodoPage(addTodoData),
+              );
+            },
+          );
+        },
+        child: Icon(Icons.add, size: 24),
+      ),
     );
   }
 }

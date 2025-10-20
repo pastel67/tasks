@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tasks/pages/to_do_lists/home_page_dark.dart';
 import 'package:tasks/pages/to_do_lists/home_page_light.dart';
 import 'package:tasks/themeData.dart';
 
@@ -26,10 +25,10 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      themeMode: darkMode ? ThemeMode.dark : ThemeMode.light,
+      themeMode: darkMode? ThemeMode.dark : ThemeMode.light,
       theme: lightTheme,
       darkTheme: darkThmem,
-      home: darkMode ? HomePageDark(togled) : HomePageLight(togled),
+      home: HomePageLight(togled),
     );
   }
 }

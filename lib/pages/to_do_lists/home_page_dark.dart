@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tasks/pages/to_do_lists/widget/floating_button.dart';
-import 'package:tasks/pages/to_do_lists/widget/meggage.dart';
+import 'package:tasks/pages/to_do_lists/add_todo_page.dart';
+import 'package:tasks/pages/to_do_lists/widget/non_to_do_list.dart';
 
 class HomePageDark extends StatefulWidget {
   void Function(bool modeChange) togleMode;
@@ -40,9 +40,28 @@ class _HomePageDarkState extends State<HomePageDark> {
           ),
         ],
       ),
-      body: Messages(appTitle),
+      body: NonToDoList(appTitle),
       resizeToAvoidBottomInset: false,
-      floatingActionButton: floatingButton(context),
+      floatingActionButton: FloatingActionButton(
+    backgroundColor: Theme.of(context).colorScheme.primary,
+    shape: CircleBorder(),
+    onPressed: () {
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        builder: (BuildContext context) {
+          return Padding(
+            padding: EdgeInsets.only(
+              left: 20,
+              right: 20,
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
+          );
+        },
+      );
+    },
+    child: Icon(Icons.add, size: 24),
+  ),
     );
   }
 }

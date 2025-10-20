@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class Messages extends StatelessWidget {
+class NonToDoList extends StatelessWidget {
   final String appTitle;
 
-  Messages(this.appTitle);
+  const NonToDoList(this.appTitle);
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +12,7 @@ class Messages extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          color: Theme.of(context).colorScheme.surface,
+          color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.7),
         ),
         height: 250,
         width: double.infinity,
