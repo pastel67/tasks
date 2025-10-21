@@ -15,8 +15,8 @@ class _AddTodoPageState extends State<AddTodoPage> {
   TextEditingController tilteController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 
-  bool isDescription = true;
-  bool isFavorite = false;
+  bool onToggleDescription = true;
+  bool onToggleFavorite = false;
 
   ToDoEntity newTodo = ToDoEntity('', '', false, false);
 
@@ -24,7 +24,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
     ToDoEntity inputTodo = ToDoEntity(
       tilteController.text,
       descriptionController.text,
-      isFavorite,
+      onToggleFavorite,
       false,
     );
     newTodo = inputTodo;
@@ -33,10 +33,10 @@ class _AddTodoPageState extends State<AddTodoPage> {
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
-      children: [textField(), SizedBox(height: 10), buttons(context)],
+      children: [textField(), SizedBox(height: 12), buttons(context)],
     );
   }
- 
+
   Column textField() {
     return Column(
       children: [
@@ -66,15 +66,12 @@ class _AddTodoPageState extends State<AddTodoPage> {
             hintStyle: TextStyle(fontSize: 16),
           ),
         ),
-        isDescription
+        onToggleDescription
             ? SizedBox()
             : TextField(
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
                 controller: descriptionController,
-                onSubmitted: (value) {
-                  print(descriptionController);
-                },
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: '세부정보 추가',
@@ -88,11 +85,11 @@ class _AddTodoPageState extends State<AddTodoPage> {
   Row buttons(BuildContext context) {
     return Row(
       children: [
-        isDescription
+        onToggleDescription
             ? IconButton(
                 onPressed: () {
                   setState(() {
-                    isDescription = !isDescription;
+                    onToggleDescription = !onToggleDescription;
                   });
                 },
                 icon: Icon(Icons.short_text_rounded, size: 24),
@@ -101,10 +98,10 @@ class _AddTodoPageState extends State<AddTodoPage> {
         IconButton(
           onPressed: () {
             setState(() {
-              isFavorite = !isFavorite;
+              onToggleFavorite = !onToggleFavorite;
             });
           },
-          icon: isFavorite
+          icon: onToggleFavorite
               ? Icon(
                   Icons.star,
                   size: 24,
@@ -113,12 +110,12 @@ class _AddTodoPageState extends State<AddTodoPage> {
               : Icon(Icons.star_border, size: 24),
         ),
         Spacer(),
-        isDescription
+        onToggleDescription
             ? Container()
             : TextButton(
                 onPressed: () {
                   setState(() {
-                    isDescription = !isDescription;
+                    onToggleDescription = !onToggleDescription;
                   });
                 },
                 child: Text(
