@@ -31,20 +31,34 @@ class _AddTodoPageState extends State<AddTodoPage> {
   }
 
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [textField(), SizedBox(height: 12), buttons(context)],
+    return Container(
+      padding: EdgeInsets.fromLTRB(
+        20,
+        12,
+        20,
+        MediaQuery.of(context).viewInsets.bottom,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          textField(),
+          SizedBox(height: 12),
+          buttons(context),
+          SizedBox(height: 6),
+        ],
+      ),
     );
   }
 
   Column textField() {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         TextField(
           controller: tilteController,
           onChanged: (value) {
             setState(() {});
-          }, // ValueListenableBuilder 대신 사용
+          },
           autofocus: true,
           maxLines: 1,
           onSubmitted: (value) {
@@ -52,7 +66,22 @@ class _AddTodoPageState extends State<AddTodoPage> {
               showCupertinoDialog(
                 context: context,
                 builder: (context) {
-                  return errorMassege(context, "내용을 입력해 주세요.");
+                  return CupertinoAlertDialog(
+                    title: Text("내용을 입력해 주세요."),
+                    actions: [
+                      CupertinoDialogAction(
+                        child: Text(
+                          "확인",
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                  );
                 },
               );
             } else {
@@ -66,16 +95,20 @@ class _AddTodoPageState extends State<AddTodoPage> {
             hintStyle: TextStyle(fontSize: 16),
           ),
         ),
+
         onToggleDescription
             ? SizedBox()
-            : TextField(
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
-                controller: descriptionController,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: '세부정보 추가',
-                  hintStyle: TextStyle(fontSize: 14),
+            : Expanded(
+                child: TextField(
+                  controller: descriptionController,
+                  keyboardType: TextInputType.multiline,
+                  minLines: 1,
+                  maxLines: 10,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: '세부정보 추가',
+                    hintStyle: TextStyle(fontSize: 14),
+                  ),
                 ),
               ),
       ],
@@ -94,7 +127,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
                 },
                 icon: Icon(Icons.short_text_rounded, size: 24),
               )
-            : Container(),
+            : SizedBox(),
         IconButton(
           onPressed: () {
             setState(() {
@@ -110,8 +143,9 @@ class _AddTodoPageState extends State<AddTodoPage> {
               : Icon(Icons.star_border, size: 24),
         ),
         Spacer(),
+
         onToggleDescription
-            ? Container()
+            ? SizedBox()
             : TextButton(
                 onPressed: () {
                   setState(() {
@@ -123,51 +157,59 @@ class _AddTodoPageState extends State<AddTodoPage> {
                   style: TextStyle(color: Theme.of(context).dividerColor),
                 ),
               ),
-        TextButton(
-          onPressed: () {
-            if (tilteController.text.isEmpty) {
-              showCupertinoDialog(
-                context: context,
-                builder: (context) {
-                  return errorMassege(context, "내용을 입력해 주세요.");
+
+        tilteController.text.isEmpty
+            ? Padding(
+                padding: const EdgeInsets.only(right: 5.0),
+                child: TextButton(
+                  onPressed: () {
+                    errorDialog(context);
+                  },
+                  child: Text(
+                    "저장",
+                    style: TextStyle(color: Theme.of(context).dividerColor),
+                  ),
+                ),
+              )
+            : ElevatedButton(
+                onPressed: () {
+                  saveTodo();
+                  widget.newTodoData(newTodo);
+                  Navigator.pop(context);
                 },
-              );
-            } else {
-              saveTodo();
-              widget.newTodoData(newTodo);
-              Navigator.pop(context);
-            }
-          },
-          child: /*ValueListenableBuilder(
-            valueListenable: tilteController,// 외국용.. 
-            builder: (context, value, child) {
-              return*/ Text(
-            "저장",
-            style: TextStyle(
-              color: tilteController.text.isEmpty
-                  ? Theme.of(context).dividerColor
-                  : Theme.of(context).colorScheme.secondary,
-            ),
-          ),
-        ),
+                child: Text(
+                  "저장",
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                ),
+              ),
+        SizedBox(width: 5),
       ],
     );
   }
 
-  CupertinoAlertDialog errorMassege(BuildContext contexto, String Massege) {
-    return CupertinoAlertDialog(
-      title: Text(Massege),
-      actions: [
-        CupertinoDialogAction(
-          child: Text(
-            "확인",
-            style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ],
+  Future<dynamic> errorDialog(BuildContext context) {
+    return showCupertinoDialog(
+      context: context,
+      builder: (context) {
+        return CupertinoAlertDialog(
+          title: Text("내용을 입력해 주세요."),
+          actions: [
+            CupertinoDialogAction(
+              child: Text(
+                "확인",
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

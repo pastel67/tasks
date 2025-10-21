@@ -18,6 +18,7 @@ class _MyAppState extends State<MyApp> {
 
   void togled(bool modeChange) {
     setState(() {
+      print(4);
       darkMode = modeChange;
     });
   }

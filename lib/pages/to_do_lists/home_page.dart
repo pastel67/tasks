@@ -16,14 +16,17 @@ class HomePageLight extends StatefulWidget {
 class _HomePageLightState extends State<HomePageLight> {
   final String appTitle = "준호's Tasks";
   bool modeChange = false;
+
   List<ToDoEntity> todoData = [];
 
   void TodoData(ToDoEntity newTodo) {
     setState(() {
       todoData.add(newTodo);
-      print(todoData[0].title);
     });
   }
+
+  void onToggleDone() {}
+  void onToggleFavorite() {}
 
   @override
   Widget build(BuildContext context) {
@@ -57,19 +60,7 @@ class _HomePageLightState extends State<HomePageLight> {
         ],
       ),
 
-      body: todoData.isEmpty
-          ? NonToDoList(appTitle)
-          : ListView.separated(
-              itemBuilder: (context, index) {
-                return ToDoView();
-              },
-              separatorBuilder: (context, index) {
-                return SizedBox(height: 10);
-              },
-              itemCount: todoData.length,
-            ),
-
-      resizeToAvoidBottomInset: false,
+      body: todoData.isEmpty ? NonToDoList(appTitle) : toDoView(),
 
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).colorScheme.primary,
@@ -77,20 +68,43 @@ class _HomePageLightState extends State<HomePageLight> {
         onPressed: () {
           showModalBottomSheet(
             context: context,
-            isScrollControlled: true,
             builder: (BuildContext context) {
-              return Padding(
-                padding: EdgeInsets.only(
-                  left: 20,
-                  right: 20,
-                  bottom: MediaQuery.of(context).viewInsets.bottom,
-                ),
-                child: AddTodoPage(TodoData),
-              );
+              return AddTodoPage(TodoData);
             },
           );
         },
         child: Icon(Icons.add, size: 24),
+      ),
+    );
+  }
+
+  Widget toDoView() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 4.0),
+      child: ListView.separated(
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Container(
+              margin: EdgeInsets.symmetric(vertical: 8),
+              width: double.infinity,
+              height: 60,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Theme.of(context).colorScheme.surface,
+              ),
+              child: ToDoView(
+                todoData[index],
+                todoData[index].isFavorite,
+                TodoData,
+              ),
+            ),
+          );
+        },
+        separatorBuilder: (context, index) {
+          return SizedBox(height: 10);
+        },
+        itemCount: todoData.length,
       ),
     );
   }
