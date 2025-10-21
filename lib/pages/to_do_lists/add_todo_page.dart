@@ -127,7 +127,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
               ? Icon(
                   Icons.star,
                   size: 24,
-                  color: Theme.of(context).colorScheme.primary,
+                  color: Theme.of(context).colorScheme.secondary,
                 )
               : Icon(Icons.star_border, size: 24),
         ),
@@ -170,6 +170,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
                   "저장",
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.secondary,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
@@ -188,9 +189,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
             CupertinoDialogAction(
               child: Text(
                 "확인",
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
+                style: TextStyle(color: Theme.of(context).dividerColor),
               ),
               onPressed: () {
                 Navigator.pop(context);

@@ -16,7 +16,6 @@ class HomePageLight extends StatefulWidget {
 class _HomePageLightState extends State<HomePageLight> {
   final String appTitle = "준호's Tasks";
   bool modeChange = false;
-  int todoIndex = 0;
 
   List<ToDoEntity> todoDataList = [];
 
@@ -26,27 +25,17 @@ class _HomePageLightState extends State<HomePageLight> {
     });
   }
 
-  void onGetTodoIndex(int putIndex) {
-    todoIndex = putIndex;
-  }
-
-  void onChangeTodoData(ToDoEntity changedTodo) {
+  void onChangeTodoData(ToDoEntity changedTodo, int putIndex) {
     setState(() {
-      /*print('==============before=================');
-      print(todoDataList[todoIndex].isDone);
-      print(changedTodo.isDone);*/
-      print(todoIndex);
-      todoDataList[todoIndex] = changedTodo;
-      /*print('===============after================');
-      print(todoDataList[todoIndex].isDone);
-      print(changedTodo.isDone);*/
+      print(putIndex);
+      todoDataList[putIndex] = changedTodo;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: modeChange ? Colors.grey[600] : Colors.grey[400],
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
 
       appBar: AppBar(
         centerTitle: true,
@@ -63,7 +52,7 @@ class _HomePageLightState extends State<HomePageLight> {
                   )
                 : Icon(
                     Icons.sunny,
-                    color: Theme.of(context).colorScheme.primary,
+                    color: Theme.of(context).colorScheme.secondary,
                   ),
             onPressed: () {
               setState(() {
@@ -75,7 +64,16 @@ class _HomePageLightState extends State<HomePageLight> {
         ],
       ),
 
-      body: todoDataList.isEmpty ? NonToDoList(appTitle) : toDoView(),
+      body: todoDataList.isEmpty
+          ? NonToDoList(appTitle)
+          : GestureDetector(
+            onTap:() {
+              print('페이지 넘어갈거임');  
+            },
+            onLongPress: () {
+              print('투두 삭제할 거임');
+            },
+            child: toDoView()),
 
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).colorScheme.primary,
@@ -119,8 +117,9 @@ class _HomePageLightState extends State<HomePageLight> {
               child: ToDoView(
                 todoDataList[index],
                 onChangeTodoData,
-                onGetTodoIndex,
                 index,
+                todoDataList[index].isDone,
+                todoDataList[index].isFavorite,
               ),
             ),
           );

@@ -2,18 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:tasks/to_do_entity.dart';
 
 class ToDoView extends StatelessWidget {
-  ToDoView(this.todo, this.changedTodoData, this.giveIndex, this.todoIndex);
+  ToDoView(
+    this.todo,
+    this.changedTodoData,
+    this.todoIndex,
+    this.isDone,
+    this.isFavorite,
+  );
 
   final ToDoEntity todo;
-  void Function(ToDoEntity changedTodo) changedTodoData;
-  void Function(int putIndex) giveIndex;
+  void Function(ToDoEntity changedTodo, int putIndex) changedTodoData;
   int todoIndex;
+  bool isDone;
+  bool isFavorite;
 
-  ToDoEntity changedTodo = ToDoEntity('', '', false, false);
-
-  bool isDone = false;
-  bool isFavorite = false;
   int putIndex = 0;
+  ToDoEntity changedTodo = ToDoEntity('', '', false, false);
 
   void saveTodo() {
     ToDoEntity inputTodo = ToDoEntity(
@@ -39,19 +43,16 @@ class ToDoView extends StatelessWidget {
         children: [
           IconButton(
             onPressed: () {
-              print('$isDone _1');
               isDone = !isDone;
-              print('$isDone _2');
               saveTodo();
               pushIndex();
-              giveIndex(putIndex);
-              changedTodoData(changedTodo);
+              changedTodoData(changedTodo, todoIndex);
             },
-            icon: isDone
+            icon: todo.isDone
                 ? Icon(Icons.check_circle_rounded)
                 : Icon(Icons.circle_outlined),
           ),
-          isDone
+          todo.isDone
               ? Text(
                   todo.title,
                   style: TextStyle(decoration: TextDecoration.lineThrough),
@@ -63,14 +64,13 @@ class ToDoView extends StatelessWidget {
               isFavorite = !isFavorite;
               saveTodo();
               pushIndex();
-              giveIndex(putIndex);
-              changedTodoData(changedTodo);
+              changedTodoData(changedTodo, todoIndex);
             },
-            icon: isFavorite
+            icon: todo.isFavorite
                 ? Icon(
                     Icons.star,
                     size: 24,
-                    color: Theme.of(context).colorScheme.primary,
+                    color: Theme.of(context).colorScheme.secondary,
                   )
                 : Icon(Icons.star_border, size: 24),
           ),
