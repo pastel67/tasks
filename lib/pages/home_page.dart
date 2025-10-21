@@ -1,7 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tasks/pages/to_do_lists/add_todo_page.dart';
-import 'package:tasks/pages/to_do_lists/widget/non_to_do_list.dart';
-import 'package:tasks/pages/to_do_lists/widget/to_do_view.dart';
+import 'package:tasks/pages/add_todo_page.dart';
+import 'package:tasks/pages/to_do_detail_page.dart';
+import 'package:tasks/pages/widget/non_to_do_list.dart';
+import 'package:tasks/pages/widget/show_decision_dialog.dart';
+import 'package:tasks/pages/widget/to_do_view.dart';
 import 'package:tasks/to_do_entity.dart';
 
 class HomePageLight extends StatefulWidget {
@@ -25,10 +28,17 @@ class _HomePageLightState extends State<HomePageLight> {
     });
   }
 
+  void deleteTodoData(int inputIndex) {
+    setState(() {
+      todoDataList.remove(todoDataList[inputIndex]);
+    });
+  }
+
   void onChangeTodoData(ToDoEntity changedTodo, int putIndex) {
     setState(() {
-      print(putIndex);
+      print('before ${todoDataList[putIndex].title}');
       todoDataList[putIndex] = changedTodo;
+      print('after ${todoDataList[putIndex].title}');
     });
   }
 
@@ -64,17 +74,8 @@ class _HomePageLightState extends State<HomePageLight> {
         ],
       ),
 
-      body: todoDataList.isEmpty
-          ? NonToDoList(appTitle)
-          : GestureDetector(
-            onTap:() {
-              print('페이지 넘어갈거임');  
-            },
-            onLongPress: () {
-              print('투두 삭제할 거임');
-            },
-            child: toDoView()),
-
+      body: todoDataList.isEmpty ? NonToDoList(appTitle) : toDoView(),
+      resizeToAvoidBottomInset: false,
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).colorScheme.primary,
         shape: CircleBorder(),
@@ -106,20 +107,46 @@ class _HomePageLightState extends State<HomePageLight> {
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Container(
-              margin: EdgeInsets.symmetric(vertical: 8),
-              width: double.infinity,
-              height: 60,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: Theme.of(context).colorScheme.surface,
-              ),
-              child: ToDoView(
-                todoDataList[index],
-                onChangeTodoData,
-                index,
-                todoDataList[index].isDone,
-                todoDataList[index].isFavorite,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ToDoDetailPage(
+                      todoIndex: index,
+                      description: todoDataList[index].description,
+                      todo: todoDataList[index],
+                      title: todoDataList[index].title,
+                      isFavorite: todoDataList[index].isFavorite,
+                      changedTodoData: onChangeTodoData,
+                    ),
+                  ),
+                );
+              },
+              onLongPress: () {
+                showDecisionDialog(
+                  context,
+                  '이 할일을 삭제 하시겠습니까?',
+                  '아니오',
+                  '예',
+                  (){deleteTodoData(index);},
+                );
+              },
+              child: Container(
+                margin: EdgeInsets.symmetric(vertical: 8),
+                width: double.infinity,
+                height: 60,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: Theme.of(context).colorScheme.surface,
+                ),
+                child: ToDoView(
+                  todoDataList[index],
+                  onChangeTodoData,
+                  index,
+                  todoDataList[index].isDone,
+                  todoDataList[index].isFavorite,
+                ),
               ),
             ),
           );

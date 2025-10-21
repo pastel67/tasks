@@ -31,14 +31,16 @@ class _AddTodoPageState extends State<AddTodoPage> {
   }
 
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        textField(),
-        SizedBox(height: 12),
-        buttons(context),
-        SizedBox(height: 6),
-      ],
+    return SafeArea(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          textField(),
+          SizedBox(height: 12),
+          buttons(context),
+          SizedBox(height: 6),
+        ],
+      ),
     );
   }
 
@@ -46,6 +48,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
     return Column(
       children: [
         TextField(
+          cursorColor: Theme.of(context).dividerColor,
           controller: tilteController,
           onChanged: (value) {
             setState(() {});
@@ -54,27 +57,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
           maxLines: 1,
           onSubmitted: (value) {
             if (tilteController.text.isEmpty) {
-              showCupertinoDialog(
-                context: context,
-                builder: (context) {
-                  return CupertinoAlertDialog(
-                    title: Text("내용을 입력해 주세요."),
-                    actions: [
-                      CupertinoDialogAction(
-                        child: Text(
-                          "확인",
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                        ),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ],
-                  );
-                },
-              );
+              errorDialog(context);
             } else {
               saveTodo();
               widget.addTodoData(newTodo);
@@ -86,18 +69,19 @@ class _AddTodoPageState extends State<AddTodoPage> {
             hintStyle: TextStyle(fontSize: 16),
           ),
         ),
-
         isDescription
             ? SizedBox()
-            : TextField(
-                controller: descriptionController,
-                keyboardType: TextInputType.multiline,
-                minLines: 1,
-                maxLines: 10,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: '세부정보 추가',
-                  hintStyle: TextStyle(fontSize: 14),
+            : SingleChildScrollView(
+                child: TextField(
+                  cursorColor: Theme.of(context).dividerColor,
+                  controller: descriptionController,
+                  keyboardType: TextInputType.multiline,
+                  minLines: 1,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: '세부정보 추가',
+                    hintStyle: TextStyle(fontSize: 14),
+                  ),
                 ),
               ),
       ],

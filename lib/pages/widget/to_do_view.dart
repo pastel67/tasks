@@ -19,7 +19,7 @@ class ToDoView extends StatelessWidget {
   int putIndex = 0;
   ToDoEntity changedTodo = ToDoEntity('', '', false, false);
 
-  void saveTodo() {
+  void changeTodo() {
     ToDoEntity inputTodo = ToDoEntity(
       todo.title,
       todo.description,
@@ -44,9 +44,9 @@ class ToDoView extends StatelessWidget {
           IconButton(
             onPressed: () {
               isDone = !isDone;
-              saveTodo();
+              changeTodo();
               pushIndex();
-              changedTodoData(changedTodo, todoIndex);
+              changedTodoData(changedTodo, putIndex);
             },
             icon: todo.isDone
                 ? Icon(Icons.check_circle_rounded)
@@ -62,9 +62,9 @@ class ToDoView extends StatelessWidget {
           IconButton(
             onPressed: () {
               isFavorite = !isFavorite;
-              saveTodo();
+              changeTodo();
               pushIndex();
-              changedTodoData(changedTodo, todoIndex);
+              changedTodoData(changedTodo, putIndex);
             },
             icon: todo.isFavorite
                 ? Icon(
