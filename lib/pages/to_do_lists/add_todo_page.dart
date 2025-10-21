@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:tasks/to_do_entity.dart';
 
 class AddTodoPage extends StatefulWidget {
-  void Function(ToDoEntity newTodo) newTodoData;
+  void Function(ToDoEntity newTodo) addTodoData;
 
-  AddTodoPage(this.newTodoData);
+  AddTodoPage(this.addTodoData);
 
   @override
   State<AddTodoPage> createState() => _AddTodoPageState();
@@ -15,8 +15,8 @@ class _AddTodoPageState extends State<AddTodoPage> {
   TextEditingController tilteController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 
-  bool onToggleDescription = true;
-  bool onToggleFavorite = false;
+  bool isDescription = true;
+  bool isFavorite = false;
 
   ToDoEntity newTodo = ToDoEntity('', '', false, false);
 
@@ -24,35 +24,26 @@ class _AddTodoPageState extends State<AddTodoPage> {
     ToDoEntity inputTodo = ToDoEntity(
       tilteController.text,
       descriptionController.text,
-      onToggleFavorite,
+      isFavorite,
       false,
     );
     newTodo = inputTodo;
   }
 
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.fromLTRB(
-        20,
-        12,
-        20,
-        MediaQuery.of(context).viewInsets.bottom,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          textField(),
-          SizedBox(height: 12),
-          buttons(context),
-          SizedBox(height: 6),
-        ],
-      ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        textField(),
+        SizedBox(height: 12),
+        buttons(context),
+        SizedBox(height: 6),
+      ],
     );
   }
 
   Column textField() {
     return Column(
-      mainAxisSize: MainAxisSize.min,
       children: [
         TextField(
           controller: tilteController,
@@ -86,7 +77,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
               );
             } else {
               saveTodo();
-              widget.newTodoData(newTodo);
+              widget.addTodoData(newTodo);
               Navigator.pop(context);
             }
           },
@@ -96,19 +87,17 @@ class _AddTodoPageState extends State<AddTodoPage> {
           ),
         ),
 
-        onToggleDescription
+        isDescription
             ? SizedBox()
-            : Expanded(
-                child: TextField(
-                  controller: descriptionController,
-                  keyboardType: TextInputType.multiline,
-                  minLines: 1,
-                  maxLines: 10,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: '세부정보 추가',
-                    hintStyle: TextStyle(fontSize: 14),
-                  ),
+            : TextField(
+                controller: descriptionController,
+                keyboardType: TextInputType.multiline,
+                minLines: 1,
+                maxLines: 10,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: '세부정보 추가',
+                  hintStyle: TextStyle(fontSize: 14),
                 ),
               ),
       ],
@@ -118,11 +107,11 @@ class _AddTodoPageState extends State<AddTodoPage> {
   Row buttons(BuildContext context) {
     return Row(
       children: [
-        onToggleDescription
+        isDescription
             ? IconButton(
                 onPressed: () {
                   setState(() {
-                    onToggleDescription = !onToggleDescription;
+                    isDescription = !isDescription;
                   });
                 },
                 icon: Icon(Icons.short_text_rounded, size: 24),
@@ -131,10 +120,10 @@ class _AddTodoPageState extends State<AddTodoPage> {
         IconButton(
           onPressed: () {
             setState(() {
-              onToggleFavorite = !onToggleFavorite;
+              isFavorite = !isFavorite;
             });
           },
-          icon: onToggleFavorite
+          icon: isFavorite
               ? Icon(
                   Icons.star,
                   size: 24,
@@ -144,12 +133,12 @@ class _AddTodoPageState extends State<AddTodoPage> {
         ),
         Spacer(),
 
-        onToggleDescription
+        isDescription
             ? SizedBox()
             : TextButton(
                 onPressed: () {
                   setState(() {
-                    onToggleDescription = !onToggleDescription;
+                    isDescription = !isDescription;
                   });
                 },
                 child: Text(
@@ -174,7 +163,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
             : ElevatedButton(
                 onPressed: () {
                   saveTodo();
-                  widget.newTodoData(newTodo);
+                  widget.addTodoData(newTodo);
                   Navigator.pop(context);
                 },
                 child: Text(

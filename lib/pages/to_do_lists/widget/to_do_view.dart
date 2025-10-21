@@ -1,30 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:tasks/to_do_entity.dart';
 
-class ToDoView extends StatefulWidget {
-  ToDoView(this.todo, this.onToggleFavorite,  this.newTodoData);
+class ToDoView extends StatelessWidget {
+  ToDoView(this.todo, this.changedTodoData, this.giveIndex, this.todoIndex);
 
   final ToDoEntity todo;
-  void Function(ToDoEntity newTodo) newTodoData;
-  bool onToggleFavorite;
+  void Function(ToDoEntity changedTodo) changedTodoData;
+  void Function(int putIndex) giveIndex;
+  int todoIndex;
 
-  @override
-  State<ToDoView> createState() => _ToDoViewState();
-}
+  ToDoEntity changedTodo = ToDoEntity('', '', false, false);
 
-class _ToDoViewState extends State<ToDoView> {
-  ToDoEntity newTodo = ToDoEntity('', '', false, false);
-
-  bool onToggleDone = false;
+  bool isDone = false;
+  bool isFavorite = false;
+  int putIndex = 0;
 
   void saveTodo() {
     ToDoEntity inputTodo = ToDoEntity(
-      widget.todo.title,
-      widget.todo.description,
-      widget.onToggleFavorite,
-      onToggleDone,
+      todo.title,
+      todo.description,
+      isFavorite,
+      isDone,
     );
-    newTodo = inputTodo;
+    changedTodo = inputTodo;
+  }
+
+  void pushIndex() {
+    putIndex = todoIndex;
   }
 
   @override
@@ -37,30 +39,34 @@ class _ToDoViewState extends State<ToDoView> {
         children: [
           IconButton(
             onPressed: () {
-           
-                onToggleDone = !onToggleDone;
-       
+              print('$isDone _1');
+              isDone = !isDone;
+              print('$isDone _2');
+              saveTodo();
+              pushIndex();
+              giveIndex(putIndex);
+              changedTodoData(changedTodo);
             },
-            icon: onToggleDone
+            icon: isDone
                 ? Icon(Icons.check_circle_rounded)
                 : Icon(Icons.circle_outlined),
           ),
-          onToggleDone
+          isDone
               ? Text(
-                  widget.todo.title,
+                  todo.title,
                   style: TextStyle(decoration: TextDecoration.lineThrough),
                 )
-              : Text(widget.todo.title),
+              : Text(todo.title),
           Spacer(),
           IconButton(
             onPressed: () {
-              
-                print(widget.onToggleFavorite);
-                widget.onToggleFavorite = !widget.onToggleFavorite;
-                print(widget.onToggleFavorite);
-            
+              isFavorite = !isFavorite;
+              saveTodo();
+              pushIndex();
+              giveIndex(putIndex);
+              changedTodoData(changedTodo);
             },
-            icon: widget.onToggleFavorite
+            icon: isFavorite
                 ? Icon(
                     Icons.star,
                     size: 24,

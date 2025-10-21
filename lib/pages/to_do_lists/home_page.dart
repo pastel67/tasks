@@ -16,17 +16,32 @@ class HomePageLight extends StatefulWidget {
 class _HomePageLightState extends State<HomePageLight> {
   final String appTitle = "준호's Tasks";
   bool modeChange = false;
+  int todoIndex = 0;
 
-  List<ToDoEntity> todoData = [];
+  List<ToDoEntity> todoDataList = [];
 
-  void TodoData(ToDoEntity newTodo) {
+  void addTodo(ToDoEntity newTodo) {
     setState(() {
-      todoData.add(newTodo);
+      todoDataList.add(newTodo);
     });
   }
 
-  void onToggleDone() {}
-  void onToggleFavorite() {}
+  void onGetTodoIndex(int putIndex) {
+    todoIndex = putIndex;
+  }
+
+  void onChangeTodoData(ToDoEntity changedTodo) {
+    setState(() {
+      /*print('==============before=================');
+      print(todoDataList[todoIndex].isDone);
+      print(changedTodo.isDone);*/
+      print(todoIndex);
+      todoDataList[todoIndex] = changedTodo;
+      /*print('===============after================');
+      print(todoDataList[todoIndex].isDone);
+      print(changedTodo.isDone);*/
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +75,7 @@ class _HomePageLightState extends State<HomePageLight> {
         ],
       ),
 
-      body: todoData.isEmpty ? NonToDoList(appTitle) : toDoView(),
+      body: todoDataList.isEmpty ? NonToDoList(appTitle) : toDoView(),
 
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).colorScheme.primary,
@@ -69,7 +84,15 @@ class _HomePageLightState extends State<HomePageLight> {
           showModalBottomSheet(
             context: context,
             builder: (BuildContext context) {
-              return AddTodoPage(TodoData);
+              return Padding(
+                padding: EdgeInsets.fromLTRB(
+                  20,
+                  12,
+                  20,
+                  MediaQuery.of(context).viewInsets.bottom,
+                ),
+                child: AddTodoPage(addTodo),
+              );
             },
           );
         },
@@ -81,7 +104,7 @@ class _HomePageLightState extends State<HomePageLight> {
   Widget toDoView() {
     return Padding(
       padding: const EdgeInsets.only(top: 4.0),
-      child: ListView.separated(
+      child: ListView.builder(
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -94,17 +117,15 @@ class _HomePageLightState extends State<HomePageLight> {
                 color: Theme.of(context).colorScheme.surface,
               ),
               child: ToDoView(
-                todoData[index],
-                todoData[index].isFavorite,
-                TodoData,
+                todoDataList[index],
+                onChangeTodoData,
+                onGetTodoIndex,
+                index,
               ),
             ),
           );
         },
-        separatorBuilder: (context, index) {
-          return SizedBox(height: 10);
-        },
-        itemCount: todoData.length,
+        itemCount: todoDataList.length,
       ),
     );
   }
