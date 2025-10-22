@@ -31,16 +31,9 @@ class _AddTodoPageState extends State<AddTodoPage> {
   }
 
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          textField(),
-          SizedBox(height: 30),
-          buttons(context),
-          SizedBox(height: 6),
-        ],
-      ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [textField(), buttons(context), SizedBox(height: 6)],
     );
   }
 
@@ -71,18 +64,16 @@ class _AddTodoPageState extends State<AddTodoPage> {
         ),
         isDescription
             ? SizedBox()
-            : SingleChildScrollView(
-                child: TextField(
-                  cursorColor: Theme.of(context).dividerColor,
-                  controller: descriptionController,
-                  keyboardType: TextInputType.multiline,
-                  minLines: 1,
-                  maxLines: 3,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: '세부정보 추가',
-                    hintStyle: TextStyle(fontSize: 14),
-                  ),
+            : TextField(
+                cursorColor: Theme.of(context).dividerColor,
+                controller: descriptionController,
+                keyboardType: TextInputType.multiline,
+                minLines: 1,
+                maxLines: 6,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: '세부정보 추가',
+                  hintStyle: TextStyle(fontSize: 14),
                 ),
               ),
       ],

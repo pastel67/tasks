@@ -100,6 +100,7 @@ class _HomePageLightState extends State<HomePageLight> {
         onPressed: () {
           showModalBottomSheet(
             context: context,
+            isScrollControlled: true,
             builder: (BuildContext context) {
               return Padding(
                 padding: EdgeInsets.fromLTRB(
