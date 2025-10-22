@@ -7,8 +7,10 @@ import 'package:tasks/pages/widget/show_decision_dialog.dart';
 import 'package:tasks/pages/widget/to_do_view.dart';
 import 'package:tasks/to_do_entity.dart';
 
+//홈 페이지
 class HomePageLight extends StatefulWidget {
-  void Function(bool modeChange) togleMode;
+  // 테마 전환 정보를 전달하기 위한 함수형 속성
+  void Function(bool darkModeChange) togleMode;
 
   HomePageLight(this.togleMode);
 
@@ -17,24 +19,30 @@ class HomePageLight extends StatefulWidget {
 }
 
 class _HomePageLightState extends State<HomePageLight> {
+  // 앱 타이틀 설정
   final String appTitle = "준호's Tasks";
-  bool modeChange = false;
+  
+  bool darkModeChange = false; //true 면 다크 테마. false 면 라이트 테마
 
+  //할일 저장 리스트
   List<ToDoEntity> todoDataList = [];
 
+  //새로 입력한 정보를 리스트에 저장 함수
   void addTodo(ToDoEntity newTodo) {
     setState(() {
       todoDataList.add(newTodo);
     });
   }
 
+  //저장된 특정 todo 리스트를 삭제 함수
   void deleteTodoData(int inputIndex) {
     setState(() {
       todoDataList.remove(todoDataList[inputIndex]);
     });
   }
 
-  void onSaveContents(
+  // 특정 todo의 상세 페이지에서 변경된 타이틀과 상세내용 저장 함수 
+  void onChangedContents(
     String changedTitle,
     String changedDescription,
     int index,
@@ -42,21 +50,19 @@ class _HomePageLightState extends State<HomePageLight> {
     setState(() {
       todoDataList[index].title = changedTitle;
       todoDataList[index].description = changedDescription;
-      print('${todoDataList[index].title},$changedTitle로 내용 변경됨');
     });
   }
 
+  // 특정 todo의 즐겨찾기 상태 변환 함수
   void onToggleFavorite(bool toggledFavorite, int putIndex) {
     setState(() {
       todoDataList[putIndex].isFavorite = !todoDataList[putIndex].isFavorite;
-      print('$putIndex번 ${todoDataList[putIndex].isFavorite} - isFavorite');
     });
   }
-
+  // 특정 todo의 완료 상태 변환 함수
   void onToggleDone(bool toggledDone, int putIndex) {
     setState(() {
       todoDataList[putIndex].isDone = !todoDataList[putIndex].isDone;
-      print('$putIndex번 ${todoDataList[putIndex].isDone} - isDone');
     });
   }
 
@@ -72,8 +78,9 @@ class _HomePageLightState extends State<HomePageLight> {
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         actions: [
+          // 테마 모드 변경 버튼
           IconButton(
-            icon: modeChange
+            icon: darkModeChange
                 ? Icon(
                     Icons.nightlight,
                     color: Theme.of(context).colorScheme.secondary,
@@ -84,8 +91,8 @@ class _HomePageLightState extends State<HomePageLight> {
                   ),
             onPressed: () {
               setState(() {
-                modeChange = !modeChange;
-                widget.togleMode(modeChange);
+                darkModeChange = !darkModeChange;
+                widget.togleMode(darkModeChange);
               });
             },
           ),
@@ -94,6 +101,8 @@ class _HomePageLightState extends State<HomePageLight> {
 
       body: todoDataList.isEmpty ? NonToDoList(appTitle) : toDoView(),
       resizeToAvoidBottomInset: false,
+
+      // 할일 추가 하는 플로팅 액선 버튼
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).colorScheme.primary,
         shape: CircleBorder(),
@@ -119,6 +128,8 @@ class _HomePageLightState extends State<HomePageLight> {
     );
   }
 
+
+  // toDoView 카드를 보여주는 리스트뷰 위젯
   Widget toDoView() {
     return Padding(
       padding: const EdgeInsets.only(top: 4.0),
@@ -141,7 +152,7 @@ class _HomePageLightState extends State<HomePageLight> {
                       onToggleDone: () {
                         onToggleDone(todoDataList[index].isDone, index);
                       },
-                      onSaveContent: onSaveContents,
+                      onSaveContent: onChangedContents,
                     ),
                   ),
                 );

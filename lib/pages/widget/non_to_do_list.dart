@@ -5,6 +5,7 @@ class NonToDoList extends StatelessWidget {
 
   const NonToDoList(this.appTitle);
 
+  // 저장된 할일 리스트가 없을 때 보여지는 카드
   @override
   Widget build(BuildContext context) {
     return Padding(

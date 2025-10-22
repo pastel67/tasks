@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:tasks/pages/widget/show_decision_dialog.dart';
 import 'package:tasks/to_do_entity.dart';
 
+// todo 상세 페이지
 class ToDoDetailPage extends StatefulWidget {
   ToDoDetailPage({
     required this.todo,
@@ -31,6 +32,7 @@ class _ToDoDetailPageState extends State<ToDoDetailPage> {
 
   int putIndex = 0;
 
+  // 페이지 상태가 변해도 타이틀과 상세 내용의 텍스트가 변경되지 않도록 이니스테이트 할수 사용
   @override
   void initState() {
     titleController = TextEditingController(text: widget.todo.title);
@@ -40,6 +42,7 @@ class _ToDoDetailPageState extends State<ToDoDetailPage> {
     super.initState();
   } //** 보물 **/
 
+  // 수정된 타이틀과 상셰 내용을 저장하는 함수
   void saveChangedText() {
     putIndex = widget.todoIndex;
     String title = titleController.text;
@@ -51,6 +54,7 @@ class _ToDoDetailPageState extends State<ToDoDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        // 이전 페이지 이동 위젯
         leading: GestureDetector(
           onTap: () {
             Navigator.pop(context);
@@ -58,8 +62,10 @@ class _ToDoDetailPageState extends State<ToDoDetailPage> {
           child: Icon(Icons.chevron_left),
         ),
         actions: [
+          // 저장 버튼
           TextButton(
             onPressed: () {
+              // 저장 확인 다이얼로그
               showDecisionDialog(
                 context: context,
                 title: '저장 하시겠습니까?',
@@ -78,6 +84,7 @@ class _ToDoDetailPageState extends State<ToDoDetailPage> {
               ),
             ),
           ),
+          // 할일 완료상태 전환 버튼
           IconButton(
             onPressed: () {
               widget.onToggleDone();
@@ -87,6 +94,7 @@ class _ToDoDetailPageState extends State<ToDoDetailPage> {
                 ? Icon(Icons.check_circle_rounded, size: 24)
                 : Icon(Icons.circle_outlined, size: 24),
           ),
+          //즐겨찾기 상태 전환 버튼
           IconButton(
             onPressed: () {
               widget.onToggleFavorite();
@@ -116,6 +124,7 @@ class _ToDoDetailPageState extends State<ToDoDetailPage> {
             children: [
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 12, 20, 8),
+                // 타이틀 보기 & 수정 텍스트 필드
                 child: TextField(
                   controller: titleController,
                   cursorColor: Theme.of(context).dividerColor,
@@ -139,6 +148,7 @@ class _ToDoDetailPageState extends State<ToDoDetailPage> {
     );
   }
 
+  // 상세 목록 보기 & 수정 텍스트 필드
   Expanded descriptionInputField(
     BuildContext context,
     TextEditingController descriptionController,

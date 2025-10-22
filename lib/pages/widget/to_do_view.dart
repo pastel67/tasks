@@ -16,10 +16,10 @@ class ToDoView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 8),
-
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
       child: Row(
         children: [
+          // 할일 완료 상태 변경 버튼
           IconButton(
             onPressed: () {
               onToggleDone();
@@ -31,8 +31,8 @@ class ToDoView extends StatelessWidget {
           Expanded(
             child: Container(
               child: todo.isDone
-                  ? Text(
-                      overflow: TextOverflow.ellipsis,
+                  ? Text( 
+                      overflow: TextOverflow.ellipsis, // 카드 보다 긴 타이틀 입력시... 으로  표시
                       todo.title,
                       style: TextStyle(decoration: TextDecoration.lineThrough),
                     )
@@ -40,6 +40,7 @@ class ToDoView extends StatelessWidget {
             ),
           ),
           SizedBox(width: 12),
+          //즐겨찾기 상태 변경 버튼
           IconButton(
             onPressed: () {
               onToggleFavorite();
