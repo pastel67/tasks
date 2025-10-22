@@ -1,8 +1,8 @@
 class ToDoEntity {
-  final String title;
-  final String? description;
-  final bool isFavorite;
-  final bool isDone;
+  String title;
+  String? description;
+  bool isFavorite;
+  bool isDone;
 
-  const ToDoEntity(this.title, this.description, this.isFavorite, this.isDone);
+  ToDoEntity(this.title, this.description, this.isFavorite, this.isDone);
 }

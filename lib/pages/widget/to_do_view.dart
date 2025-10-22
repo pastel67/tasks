@@ -2,36 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:tasks/to_do_entity.dart';
 
 class ToDoView extends StatelessWidget {
-  ToDoView(
-    this.todo,
-    this.changedTodoData,
-    this.todoIndex,
-    this.isDone,
-    this.isFavorite,
-  );
+  ToDoView({
+    required this.todo,
+    required this.onToggleFavorite,
+    required this.onToggleDone,
+  });
+  VoidCallback onToggleFavorite;
+  VoidCallback onToggleDone;
 
   final ToDoEntity todo;
-  void Function(ToDoEntity changedTodo, int putIndex) changedTodoData;
-  int todoIndex;
-  bool isDone;
-  bool isFavorite;
-
-  int putIndex = 0;
-  ToDoEntity changedTodo = ToDoEntity('', '', false, false);
-
-  void changeTodo() {
-    ToDoEntity inputTodo = ToDoEntity(
-      todo.title,
-      todo.description,
-      isFavorite,
-      isDone,
-    );
-    changedTodo = inputTodo;
-  }
-
-  void pushIndex() {
-    putIndex = todoIndex;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,28 +22,27 @@ class ToDoView extends StatelessWidget {
         children: [
           IconButton(
             onPressed: () {
-              isDone = !isDone;
-              changeTodo();
-              pushIndex();
-              changedTodoData(changedTodo, putIndex);
+              onToggleDone();
             },
             icon: todo.isDone
                 ? Icon(Icons.check_circle_rounded)
                 : Icon(Icons.circle_outlined),
           ),
-          todo.isDone
-              ? Text(
-                  todo.title,
-                  style: TextStyle(decoration: TextDecoration.lineThrough),
-                )
-              : Text(todo.title),
-          Spacer(),
+          Expanded(
+            child: Container(
+              child: todo.isDone
+                  ? Text(
+                      overflow: TextOverflow.ellipsis,
+                      todo.title,
+                      style: TextStyle(decoration: TextDecoration.lineThrough),
+                    )
+                  : Text(todo.title, overflow: TextOverflow.ellipsis),
+            ),
+          ),
+          SizedBox(width: 12),
           IconButton(
             onPressed: () {
-              isFavorite = !isFavorite;
-              changeTodo();
-              pushIndex();
-              changedTodoData(changedTodo, putIndex);
+              onToggleFavorite();
             },
             icon: todo.isFavorite
                 ? Icon(

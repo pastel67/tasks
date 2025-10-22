@@ -33,10 +33,10 @@ class _AddTodoPageState extends State<AddTodoPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Column(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: MainAxisSize.max,
         children: [
           textField(),
-          SizedBox(height: 12),
+          SizedBox(height: 30),
           buttons(context),
           SizedBox(height: 6),
         ],
@@ -77,6 +77,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
                   controller: descriptionController,
                   keyboardType: TextInputType.multiline,
                   minLines: 1,
+                  maxLines: 3,
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     hintText: '세부정보 추가',

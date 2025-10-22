@@ -34,11 +34,29 @@ class _HomePageLightState extends State<HomePageLight> {
     });
   }
 
-  void onChangeTodoData(ToDoEntity changedTodo, int putIndex) {
+  void onSaveContents(
+    String changedTitle,
+    String changedDescription,
+    int index,
+  ) {
     setState(() {
-      print('before ${todoDataList[putIndex].title}');
-      todoDataList[putIndex] = changedTodo;
-      print('after ${todoDataList[putIndex].title}');
+      todoDataList[index].title = changedTitle;
+      todoDataList[index].description = changedDescription;
+      print('${todoDataList[index].title},$changedTitle로 내용 변경됨');
+    });
+  }
+
+  void onToggleFavorite(bool toggledFavorite, int putIndex) {
+    setState(() {
+      todoDataList[putIndex].isFavorite = !todoDataList[putIndex].isFavorite;
+      print('$putIndex번 ${todoDataList[putIndex].isFavorite} - isFavorite');
+    });
+  }
+
+  void onToggleDone(bool toggledDone, int putIndex) {
+    setState(() {
+      todoDataList[putIndex].isDone = !todoDataList[putIndex].isDone;
+      print('$putIndex번 ${todoDataList[putIndex].isDone} - isDone');
     });
   }
 
@@ -113,23 +131,29 @@ class _HomePageLightState extends State<HomePageLight> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => ToDoDetailPage(
-                      todoIndex: index,
-                      description: todoDataList[index].description,
                       todo: todoDataList[index],
-                      title: todoDataList[index].title,
-                      isFavorite: todoDataList[index].isFavorite,
-                      changedTodoData: onChangeTodoData,
+                      todoIndex: index,
+
+                      onToggleFavorite: () {
+                        onToggleFavorite(todoDataList[index].isFavorite, index);
+                      },
+                      onToggleDone: () {
+                        onToggleDone(todoDataList[index].isDone, index);
+                      },
+                      onSaveContent: onSaveContents,
                     ),
                   ),
                 );
               },
               onLongPress: () {
                 showDecisionDialog(
-                  context,
-                  '이 할일을 삭제 하시겠습니까?',
-                  '아니오',
-                  '예',
-                  (){deleteTodoData(index);},
+                  context: context,
+                  title: '이 할일을 삭제 하시겠습니까?',
+                  denyMessage: '아니오',
+                  acceptMessage: '예',
+                  function: () {
+                    deleteTodoData(index);
+                  },
                 );
               },
               child: Container(
@@ -141,11 +165,13 @@ class _HomePageLightState extends State<HomePageLight> {
                   color: Theme.of(context).colorScheme.surface,
                 ),
                 child: ToDoView(
-                  todoDataList[index],
-                  onChangeTodoData,
-                  index,
-                  todoDataList[index].isDone,
-                  todoDataList[index].isFavorite,
+                  todo: todoDataList[index],
+                  onToggleFavorite: () {
+                    onToggleFavorite(todoDataList[index].isFavorite, index);
+                  },
+                  onToggleDone: () {
+                    onToggleDone(todoDataList[index].isDone, index);
+                  },
                 ),
               ),
             ),

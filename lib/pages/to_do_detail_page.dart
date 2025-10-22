@@ -6,59 +6,49 @@ import 'package:tasks/to_do_entity.dart';
 
 class ToDoDetailPage extends StatefulWidget {
   ToDoDetailPage({
-    required this.todoIndex,
-    required this.description,
     required this.todo,
-    required this.title,
-    required this.isFavorite,
-    required this.changedTodoData,
+    required this.onToggleFavorite,
+    required this.todoIndex,
+    required this.onToggleDone,
+    required this.onSaveContent,
   });
 
-  void Function(ToDoEntity changedTodo, int putIndex) changedTodoData;
-
+  VoidCallback onToggleFavorite;
+  VoidCallback onToggleDone;
+  void Function(String changedTitle, String changedDescription, int putIndex)
+  onSaveContent;
   int todoIndex;
   ToDoEntity todo;
-
-  String title;
-  String? description;
-  bool isFavorite;
 
   @override
   State<ToDoDetailPage> createState() => _ToDoDetailPageState();
 }
 
 class _ToDoDetailPageState extends State<ToDoDetailPage> {
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
   ToDoEntity changedTodo = ToDoEntity('', '', false, false);
 
   int putIndex = 0;
 
-  void changeTodo() {
-    putIndex = widget.todoIndex;
-    changedTodo = ToDoEntity(
-      widget.title,
-      widget.description,
-      widget.isFavorite,
-      widget.todo.isDone,
+  @override
+  void initState() {
+    titleController = TextEditingController(text: widget.todo.title);
+    descriptionController = TextEditingController(
+      text: widget.todo.description,
     );
-  }
+    super.initState();
+  } //** 보물 **/
 
-  void saveChangedText(String title, String description) {
-    widget.title = title;
-    widget.description = description;
-    changeTodo();
-    widget.changedTodoData(changedTodo, putIndex);
-    Navigator.pop(context);
+  void saveChangedText() {
+    putIndex = widget.todoIndex;
+    String title = titleController.text;
+    String description = descriptionController.text;
+    widget.onSaveContent(title, description, putIndex);
   }
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController titleController = TextEditingController(
-      text: widget.title,
-    );
-    TextEditingController descriptionController = TextEditingController(
-      text: widget.description,
-    );
-
     return Scaffold(
       appBar: AppBar(
         leading: GestureDetector(
@@ -70,12 +60,15 @@ class _ToDoDetailPageState extends State<ToDoDetailPage> {
         actions: [
           TextButton(
             onPressed: () {
-              showDecisionDialog(context, '저장 하시겠습니까?', '아니오', '예', () {
-                saveChangedText(
-                  titleController.text,
-                  descriptionController.text,
-                );
-              });
+              showDecisionDialog(
+                context: context,
+                title: '저장 하시겠습니까?',
+                denyMessage: '아니오',
+                acceptMessage: '예',
+                function: () {
+                  saveChangedText();
+                },
+              );
             },
             child: Text(
               "저장",
@@ -87,12 +80,19 @@ class _ToDoDetailPageState extends State<ToDoDetailPage> {
           ),
           IconButton(
             onPressed: () {
-              widget.isFavorite = !widget.isFavorite;
-              changeTodo();
-              widget.changedTodoData(changedTodo, putIndex);
+              widget.onToggleDone();
               setState(() {});
             },
-            icon: widget.isFavorite
+            icon: widget.todo.isDone
+                ? Icon(Icons.check_circle_rounded, size: 24)
+                : Icon(Icons.circle_outlined, size: 24),
+          ),
+          IconButton(
+            onPressed: () {
+              widget.onToggleFavorite();
+              setState(() {});
+            },
+            icon: widget.todo.isFavorite
                 ? Icon(
                     Icons.star,
                     size: 24,
@@ -112,15 +112,14 @@ class _ToDoDetailPageState extends State<ToDoDetailPage> {
             color: Theme.of(context).colorScheme.surface,
           ),
           child: Column(
-            //mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 12, 20, 8),
                 child: TextField(
+                  controller: titleController,
                   cursorColor: Theme.of(context).dividerColor,
                   decoration: InputDecoration(border: InputBorder.none),
-                  controller: titleController,
 
                   style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                 ),
@@ -155,11 +154,11 @@ class _ToDoDetailPageState extends State<ToDoDetailPage> {
             Expanded(
               child: SingleChildScrollView(
                 child: TextField(
+                  controller: descriptionController,
                   cursorColor: Theme.of(context).dividerColor,
                   keyboardType: TextInputType.multiline,
                   minLines: 30,
                   maxLines: null,
-                  controller: descriptionController,
                   decoration: InputDecoration(border: InputBorder.none),
                   style: TextStyle(fontSize: 20),
                 ),

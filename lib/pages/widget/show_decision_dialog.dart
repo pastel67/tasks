@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 Future<dynamic> showDecisionDialog(
-  BuildContext context,
-  String title,
-  String nonActionText,
-  String doingText,
-  VoidCallback function,
+  {required BuildContext context,
+  required String title,
+  required String denyMessage,
+  required String acceptMessage,
+  required VoidCallback function,}
 ) {
   return showDialog(
     context: context,
@@ -16,7 +16,7 @@ Future<dynamic> showDecisionDialog(
         actions: [
           CupertinoDialogAction(
             child: Text(
-              nonActionText,
+              denyMessage,
               style: TextStyle(color: Colors.grey.withValues(alpha: 0.5)),
             ),
             onPressed: () {
@@ -25,7 +25,7 @@ Future<dynamic> showDecisionDialog(
           ),
           CupertinoDialogAction(
             child: Text(
-              doingText,
+              acceptMessage,
               style: TextStyle(color: Theme.of(context).colorScheme.primary),
             ),
             onPressed: () {
