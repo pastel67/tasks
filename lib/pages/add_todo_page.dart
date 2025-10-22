@@ -20,6 +20,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
 
   ToDoEntity newTodo = ToDoEntity('', '', false, false);
 
+  //새로운 투두 리스트 생성 함수
   void saveTodo() {
     ToDoEntity inputTodo = ToDoEntity(
       tilteController.text,
@@ -37,6 +38,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
     );
   }
 
+  // 타이틀 및 상세내용 작성 텍스트 필드
   Column textField() {
     return Column(
       children: [
@@ -80,7 +82,8 @@ class _AddTodoPageState extends State<AddTodoPage> {
     );
   }
 
-  Row buttons(BuildContext context) {
+  // 하단부 버튼 모음
+  Widget buttons(BuildContext context) {
     return Row(
       children: [
         isDescription
@@ -108,7 +111,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
               : Icon(Icons.star_border, size: 24),
         ),
         Spacer(),
-
+        // 상세 내용 입력 상태 시 입력 취소 버튼 활성/비활성화
         isDescription
             ? SizedBox()
             : TextButton(
@@ -122,7 +125,8 @@ class _AddTodoPageState extends State<AddTodoPage> {
                   style: TextStyle(color: Theme.of(context).dividerColor),
                 ),
               ),
-
+        
+        // 입력 내용 저장 버튼 활성화 시 상태 변화
         tilteController.text.isEmpty
             ? Padding(
                 padding: const EdgeInsets.only(right: 5.0),
@@ -132,7 +136,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
                   },
                   child: Text(
                     "저장",
-                    style: TextStyle(color: Theme.of(context).dividerColor),
+                    style: TextStyle(color: Theme.of(context).colorScheme.secondary),
                   ),
                 ),
               )
@@ -145,8 +149,8 @@ class _AddTodoPageState extends State<AddTodoPage> {
                 child: Text(
                   "저장",
                   style: TextStyle(
-                    color: Theme.of(context).colorScheme.secondary,
-                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.primary,
+                    fontWeight: FontWeight.w800,
                   ),
                 ),
               ),
@@ -155,6 +159,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
     );
   }
 
+  // 타이틀 입력 하지 않고
   Future<dynamic> errorDialog(BuildContext context) {
     return showCupertinoDialog(
       context: context,

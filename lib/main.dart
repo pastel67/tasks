@@ -18,7 +18,6 @@ class _MyAppState extends State<MyApp> {
 
   void togled(bool modeChange) {
     setState(() {
-      print(4);
       darkMode = modeChange;
     });
   }
@@ -26,6 +25,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // 버튼으로 테마 모드 전환
       themeMode: darkMode? ThemeMode.dark : ThemeMode.light,
       theme: lightTheme,
       darkTheme: darkThmem,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// 라이트 테마 색상 설정,
 final lightTheme = ThemeData(
   useMaterial3: true,
   colorScheme: ColorScheme.fromSeed(
@@ -12,6 +13,7 @@ final lightTheme = ThemeData(
   scaffoldBackgroundColor: Colors.grey[400],
 );
 
+// 다크 테마 색상 설정
 final darkThmem = ThemeData(
   useMaterial3: true,
   colorScheme: ColorScheme.fromSeed(
