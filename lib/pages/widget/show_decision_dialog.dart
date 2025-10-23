@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-Future<dynamic> showDecisionDialog(
-  {required BuildContext context,
+Future<dynamic> showDecisionDialog({
+  required BuildContext context,
   required String title,
   required String denyMessage,
+  VoidCallback? denyFunction,
   required String acceptMessage,
-  required VoidCallback function,}
-) {
-
+  required VoidCallback acceptFunction,
+}) {
   // 작업 선택 다이얼로그
   return showDialog(
     context: context,
@@ -22,7 +22,12 @@ Future<dynamic> showDecisionDialog(
               style: TextStyle(color: Colors.grey.withValues(alpha: 0.5)),
             ),
             onPressed: () {
-              Navigator.pop(context);
+              if (denyFunction == null) {
+                Navigator.pop(context);
+              } else {
+                denyFunction();
+                Navigator.pop(context);
+              }
             },
           ),
           CupertinoDialogAction(
@@ -31,7 +36,7 @@ Future<dynamic> showDecisionDialog(
               style: TextStyle(color: Theme.of(context).colorScheme.primary),
             ),
             onPressed: () {
-              function();
+              acceptFunction();
               Navigator.pop(context);
             },
           ),

@@ -16,7 +16,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
   TextEditingController tilteController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 
-  bool inputDescription = true;
+  bool isDescription = true;
   bool isFavorite = false;
 
   ToDoEntity newTodo = ToDoEntity('', '', false, false);
@@ -24,13 +24,17 @@ class _AddTodoPageState extends State<AddTodoPage> {
   //새로운 투두 리스트 생성 함수
   void saveTodo() {
     ToDoEntity inputTodo = ToDoEntity(
-      tilteController.text,
-      descriptionController.text,
+      tilteController.text.trim(),
+      descriptionController.text.trim(),
       isFavorite,
       false,
     );
     newTodo = inputTodo;
   }
+
+  // void stayDescription (String descriptionController.text){
+  //   descriptionController = descriptionController.text
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +46,6 @@ class _AddTodoPageState extends State<AddTodoPage> {
 
   // 타이틀 및 상세내용 작성 텍스트 필드
   Column textField() {
-    TextEditingController descriptionController = TextEditingController();
-
     return Column(
       children: [
         TextField(
@@ -68,7 +70,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
             hintStyle: TextStyle(fontSize: 16),
           ),
         ),
-        inputDescription
+        isDescription
             ? SizedBox()
             : TextField(
                 controller: descriptionController,
@@ -90,11 +92,11 @@ class _AddTodoPageState extends State<AddTodoPage> {
   Widget buttons(BuildContext context) {
     return Row(
       children: [
-        inputDescription
+        isDescription
             ? IconButton(
                 onPressed: () {
                   setState(() {
-                    inputDescription = !inputDescription;
+                    isDescription = !isDescription;
                   });
                 },
                 icon: Icon(Icons.short_text_rounded, size: 24),
@@ -116,7 +118,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
         ),
         Spacer(),
         // 상세 내용 입력 상태 시 입력 취소 버튼 활성/비활성화
-        inputDescription
+        isDescription
             ? SizedBox()
             : TextButton(
                 onPressed: () {
@@ -126,8 +128,9 @@ class _AddTodoPageState extends State<AddTodoPage> {
                       title: "취소시 입력 하신 내용이\n삭제 됩니다.\n취소 하시겠습니까?",
                       denyMessage: "아니오",
                       acceptMessage: '예',
-                      function: () {
-                        inputDescription = !inputDescription;
+                      acceptFunction: () {
+                        descriptionController.clear();
+                        isDescription = !isDescription;
                         setState(() {});
                       },
                     );
@@ -141,17 +144,14 @@ class _AddTodoPageState extends State<AddTodoPage> {
 
         // 입력 내용 저장 버튼 활성화 시 상태 변화
         tilteController.text.isEmpty
-            ? Padding(
-                padding: const EdgeInsets.only(right: 5.0),
-                child: TextButton(
-                  onPressed: () {
-                    errorDialog(context);
-                  },
-                  child: Text(
-                    "저장",
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
+            ? TextButton(
+                onPressed: () {
+                  errorDialog(context);
+                },
+                child: Text(
+                  "저장",
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.secondary,
                   ),
                 ),
               )
@@ -169,7 +169,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
                   ),
                 ),
               ),
-        SizedBox(width: 5),
+        SizedBox(width: 10),
       ],
     );
   }

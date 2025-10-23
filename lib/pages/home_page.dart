@@ -49,11 +49,12 @@ class _HomePageLightState extends State<HomePageLight> {
   }
 
   // 특정 todo의 상세 페이지에서 변경된 상세내용 저장 함수
-  void onChangedDescription(String?  changedDescription, int? index) {
+  void onChangedDescription(String? changedDescription, int? index) {
     setState(() {
-      if(index == null){
-      }else{
-      todoDataList[index].description = changedDescription;}
+      if (index == null) {
+      } else {
+        todoDataList[index].description = changedDescription;
+      }
     });
   }
 
@@ -168,7 +169,7 @@ class _HomePageLightState extends State<HomePageLight> {
                   title: '이 할일을 삭제 하시겠습니까?',
                   denyMessage: '아니오',
                   acceptMessage: '예',
-                  function: () {
+                  acceptFunction: () {
                     deleteTodoData(index);
                   },
                 );

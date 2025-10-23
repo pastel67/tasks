@@ -47,9 +47,9 @@ class _ToDoDetailPageState extends State<ToDoDetailPage> {
   // 수정된 타이틀과 상셰 내용을 저장하는 함수
   void saveChangedText() {
     putIndex = widget.todoIndex;
-    String title = titleController.text;
-    String description = descriptionController.text;
-    widget.onSaveTitle(title,putIndex);
+    String title = titleController.text.trim();
+    String description = descriptionController.text.trim();
+    widget.onSaveTitle(title, putIndex);
     widget.onSaveDescioption(description, putIndex);
   }
 
@@ -74,7 +74,7 @@ class _ToDoDetailPageState extends State<ToDoDetailPage> {
                 title: '저장 하시겠습니까?',
                 denyMessage: '아니오',
                 acceptMessage: '예',
-                function: () {
+                acceptFunction: () {
                   saveChangedText();
                 },
               );
