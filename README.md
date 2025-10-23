@@ -1,16 +1,35 @@
-# to_do_app_ui
+# Flutter ToDo App
 
-A new Flutter project.
+간단하게 할일과 세부사항을 추가하고 삭제할 수 있는 app
 
-## Getting Started
+## 주요 기능
 
-This project is a starting point for a Flutter application.
+- 할 일 추가/수정/삭제
+- 중요한 할 일 즐겨찾기
+- 완료된 할 일 체크
+- 반응형 디자인
 
-A few resources to get you started if this is your first Flutter project:
+## 시작하기
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### 사전 요구사항
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Flutter SDK
+- iOS 시뮬레이터 또는 Android 에뮬레이터
+- VS Code 또는 Android Studio
+
+
+## 프로젝트 구조
+
+```
+lib/
+├── main.dart            # 앱의 진입점
+├── themeData.dart       # 앱 테마 설정
+├── to_do_entity.dart    # ToDo 모델
+└── pages/
+|   ├── add_todo_page.dart      # 할 일 추가 페이지
+|    ├── home_page.dart          # 메인 홈 페이지
+|    └── to_do_detail_page.dart  # 할 일 상세 페이지
+├── main.dart            # 앱의 진입점과 기본 설정
+├── themeData.dart       # 앱의 디자인 시스템과 테마 정의
+└── to_do_entity.dart    # ToDo 데이터 모델
+
