@@ -29,7 +29,7 @@ class _MyAppState extends State<MyApp> {
       themeMode: darkMode? ThemeMode.dark : ThemeMode.light,
       theme: lightTheme,
       darkTheme: darkThmem,
-      home: HomePageLight(togled),
+      home: HomePageLight(togled, title: "준호's Tasks"),
     );
   }
 }

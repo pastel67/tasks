@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class NonToDoList extends StatelessWidget {
-  final String appTitle;
+  final String title;
 
-  const NonToDoList(this.appTitle);
+  const NonToDoList(this.title);
 
   // 저장된 할일 리스트가 없을 때 보여지는 카드
   @override
@@ -35,7 +35,7 @@ class NonToDoList extends StatelessWidget {
             ),
             SizedBox(height: 12),
             Text(
-              "할 일을 추가 하고 $appTitle 에서 \n할 일을 추적하세요.",
+              "할 일을 추가 하고 $title 에서 \n할 일을 추적하세요.",
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 16),
             ),

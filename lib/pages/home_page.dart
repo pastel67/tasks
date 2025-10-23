@@ -9,19 +9,18 @@ import 'package:tasks/to_do_entity.dart';
 
 //홈 페이지
 class HomePageLight extends StatefulWidget {
+  // 앱 타이틀 설정
+  final String title;
   // 테마 전환 정보를 전달하기 위한 함수형 속성
   void Function(bool darkModeChange) togleMode;
 
-  HomePageLight(this.togleMode);
+  HomePageLight(this.togleMode, {required this.title});
 
   @override
   State<HomePageLight> createState() => _HomePageLightState();
 }
 
 class _HomePageLightState extends State<HomePageLight> {
-  // 앱 타이틀 설정
-  final String appTitle = "준호's Tasks";
-
   bool darkModeChange = false; //true 면 다크 테마. false 면 라이트 테마
 
   //할일 저장 리스트
@@ -80,7 +79,7 @@ class _HomePageLightState extends State<HomePageLight> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          appTitle,
+          widget.title,
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         actions: [
@@ -105,7 +104,7 @@ class _HomePageLightState extends State<HomePageLight> {
         ],
       ),
 
-      body: todoDataList.isEmpty ? NonToDoList(appTitle) : toDoView(),
+      body: todoDataList.isEmpty ? NonToDoList(widget.title) : toDoView(),
       resizeToAvoidBottomInset: false,
 
       // 할일 추가 하는 플로팅 액선 버튼
