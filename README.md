@@ -11,12 +11,6 @@
 
 ## 시작하기
 
-### 사전 요구사항
-
-- Flutter SDK
-- iOS 시뮬레이터 또는 Android 에뮬레이터
-- VS Code 또는 Android Studio
-
 
 ## 프로젝트 구조
 

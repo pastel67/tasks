@@ -21,7 +21,7 @@ class HomePageLight extends StatefulWidget {
 class _HomePageLightState extends State<HomePageLight> {
   // 앱 타이틀 설정
   final String appTitle = "준호's Tasks";
-  
+
   bool darkModeChange = false; //true 면 다크 테마. false 면 라이트 테마
 
   //할일 저장 리스트
@@ -41,15 +41,19 @@ class _HomePageLightState extends State<HomePageLight> {
     });
   }
 
-  // 특정 todo의 상세 페이지에서 변경된 타이틀과 상세내용 저장 함수 
-  void onChangedContents(
-    String changedTitle,
-    String changedDescription,
-    int index,
-  ) {
+  // 특정 todo의 상세 페이지에서 변경된 타이틀 저장 함수
+  void onChangedTitle(String changedTitle, int index) {
     setState(() {
       todoDataList[index].title = changedTitle;
-      todoDataList[index].description = changedDescription;
+    });
+  }
+
+  // 특정 todo의 상세 페이지에서 변경된 상세내용 저장 함수
+  void onChangedDescription(String?  changedDescription, int? index) {
+    setState(() {
+      if(index == null){
+      }else{
+      todoDataList[index].description = changedDescription;}
     });
   }
 
@@ -59,6 +63,7 @@ class _HomePageLightState extends State<HomePageLight> {
       todoDataList[putIndex].isFavorite = !todoDataList[putIndex].isFavorite;
     });
   }
+
   // 특정 todo의 완료 상태 변환 함수
   void onToggleDone(bool toggledDone, int putIndex) {
     setState(() {
@@ -128,7 +133,6 @@ class _HomePageLightState extends State<HomePageLight> {
     );
   }
 
-
   // toDoView 카드를 보여주는 리스트뷰 위젯
   Widget toDoView() {
     return Padding(
@@ -152,7 +156,8 @@ class _HomePageLightState extends State<HomePageLight> {
                       onToggleDone: () {
                         onToggleDone(todoDataList[index].isDone, index);
                       },
-                      onSaveContent: onChangedContents,
+                      onSaveTitle: onChangedTitle,
+                      onSaveDescioption: onChangedDescription,
                     ),
                   ),
                 );

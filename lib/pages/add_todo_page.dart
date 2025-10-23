@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tasks/pages/widget/show_decision_dialog.dart';
 import 'package:tasks/to_do_entity.dart';
 
 class AddTodoPage extends StatefulWidget {
@@ -15,7 +16,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
   TextEditingController tilteController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 
-  bool isDescription = true;
+  bool inputDescription = true;
   bool isFavorite = false;
 
   ToDoEntity newTodo = ToDoEntity('', '', false, false);
@@ -31,6 +32,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
     newTodo = inputTodo;
   }
 
+  @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -40,6 +42,8 @@ class _AddTodoPageState extends State<AddTodoPage> {
 
   // 타이틀 및 상세내용 작성 텍스트 필드
   Column textField() {
+    TextEditingController descriptionController = TextEditingController();
+
     return Column(
       children: [
         TextField(
@@ -64,11 +68,11 @@ class _AddTodoPageState extends State<AddTodoPage> {
             hintStyle: TextStyle(fontSize: 16),
           ),
         ),
-        isDescription
+        inputDescription
             ? SizedBox()
             : TextField(
-                cursorColor: Theme.of(context).dividerColor,
                 controller: descriptionController,
+                cursorColor: Theme.of(context).dividerColor,
                 keyboardType: TextInputType.multiline,
                 minLines: 1,
                 maxLines: 6,
@@ -86,11 +90,11 @@ class _AddTodoPageState extends State<AddTodoPage> {
   Widget buttons(BuildContext context) {
     return Row(
       children: [
-        isDescription
+        inputDescription
             ? IconButton(
                 onPressed: () {
                   setState(() {
-                    isDescription = !isDescription;
+                    inputDescription = !inputDescription;
                   });
                 },
                 icon: Icon(Icons.short_text_rounded, size: 24),
@@ -112,12 +116,21 @@ class _AddTodoPageState extends State<AddTodoPage> {
         ),
         Spacer(),
         // 상세 내용 입력 상태 시 입력 취소 버튼 활성/비활성화
-        isDescription
+        inputDescription
             ? SizedBox()
             : TextButton(
                 onPressed: () {
                   setState(() {
-                    isDescription = !isDescription;
+                    showDecisionDialog(
+                      context: context,
+                      title: "취소시 입력 하신 내용이\n삭제 됩니다.\n취소 하시겠습니까?",
+                      denyMessage: "아니오",
+                      acceptMessage: '예',
+                      function: () {
+                        inputDescription = !inputDescription;
+                        setState(() {});
+                      },
+                    );
                   });
                 },
                 child: Text(
@@ -125,7 +138,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
                   style: TextStyle(color: Theme.of(context).dividerColor),
                 ),
               ),
-        
+
         // 입력 내용 저장 버튼 활성화 시 상태 변화
         tilteController.text.isEmpty
             ? Padding(
@@ -136,7 +149,9 @@ class _AddTodoPageState extends State<AddTodoPage> {
                   },
                   child: Text(
                     "저장",
-                    style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
                   ),
                 ),
               )

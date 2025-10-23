@@ -11,13 +11,15 @@ class ToDoDetailPage extends StatefulWidget {
     required this.onToggleFavorite,
     required this.todoIndex,
     required this.onToggleDone,
-    required this.onSaveContent,
+    required this.onSaveTitle,
+    required this.onSaveDescioption,
   });
 
   VoidCallback onToggleFavorite;
   VoidCallback onToggleDone;
-  void Function(String changedTitle, String changedDescription, int putIndex)
-  onSaveContent;
+  void Function(String changedTitle, int putIndex) onSaveTitle;
+  void Function(String changedDescription, int putIndex) onSaveDescioption;
+
   int todoIndex;
   ToDoEntity todo;
 
@@ -47,7 +49,8 @@ class _ToDoDetailPageState extends State<ToDoDetailPage> {
     putIndex = widget.todoIndex;
     String title = titleController.text;
     String description = descriptionController.text;
-    widget.onSaveContent(title, description, putIndex);
+    widget.onSaveTitle(title,putIndex);
+    widget.onSaveDescioption(description, putIndex);
   }
 
   @override
